@@ -28,15 +28,33 @@ from time import time
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 from matplotlib.ticker import NullFormatter
-from sklearn import manifold, datasets
+from sklearn import manifold, datasets, metrics
+import numpy as np
 
 # Next line to silence pyflakes. This import is needed.
 Axes3D
 
-n_points = 1000
-X, color = datasets.samples_generator.make_s_curve(n_points, random_state=0)
+# n_points = 1000
+# X, color = datasets.samples_generator.make_s_curve(n_points, random_state=0)
 
-n_neighbors = 10
+# No of data points
+N = 8
+
+# Generating random float numbers from 0-1
+X = np.random.ranf((N, 3))
+
+# Color for each point. If you dont want any color,
+# you can initialise an array of size N with same number
+color = np.random.ranf((N))
+
+
+# To compute pair wise distances
+print metrics.pairwise_distances(X)
+print(X.shape, color.shape)
+
+
+
+n_neighbors = 6
 n_components = 2
 
 fig = plt.figure(figsize=(15, 8))
