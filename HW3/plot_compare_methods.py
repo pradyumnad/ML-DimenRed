@@ -1,27 +1,3 @@
-"""
-=========================================
- Comparison of Manifold Learning methods
-=========================================
-
-An illustration of dimensionality reduction on the S-curve dataset
-with various manifold learning methods.
-
-For a discussion and comparison of these algorithms, see the
-:ref:`manifold module page <manifold>`
-
-For a similar example, where the methods are applied to a
-sphere dataset, see :ref:`example_manifold_plot_manifold_sphere.py`
-
-Note that the purpose of the MDS is to find a low-dimensional
-representation of the data (here 2D) in which the distances respect well
-the distances in the original high-dimensional space, unlike other
-manifold-learning algorithms, it does not seeks an isotropic
-representation of the data in the low-dimensional space.
-"""
-
-# Author: Jake Vanderplas -- <vanderplas@astro.washington.edu>
-
-print(__doc__)
 
 from time import time
 
@@ -42,6 +18,7 @@ N = 8
 
 # Generating random float numbers from 0-1
 X = np.random.ranf((N, 3))
+print X
 
 # Color for each point. If you dont want any color,
 # you can initialise an array of size N with same number
@@ -70,8 +47,9 @@ except:
     ax = fig.add_subplot(251, projection='3d')
     plt.scatter(X[:, 0], X[:, 2], c=color, cmap=plt.cm.Spectral)
 
-methods = ['standard', 'ltsa', 'hessian', 'modified']
-labels = ['LLE', 'LTSA', 'Hessian LLE', 'Modified LLE']
+#Locally Linear Embedding
+methods = ['standard']
+labels = ['LLE']
 
 for i, method in enumerate(methods):
     t0 = time()
@@ -88,6 +66,8 @@ for i, method in enumerate(methods):
     ax.yaxis.set_major_formatter(NullFormatter())
     plt.axis('tight')
 
+
+#ISOMAP
 t0 = time()
 Y = manifold.Isomap(n_neighbors, n_components).fit_transform(X)
 t1 = time()
@@ -95,43 +75,6 @@ print("Isomap: %.2g sec" % (t1 - t0))
 ax = fig.add_subplot(257)
 plt.scatter(Y[:, 0], Y[:, 1], c=color, cmap=plt.cm.Spectral)
 plt.title("Isomap (%.2g sec)" % (t1 - t0))
-ax.xaxis.set_major_formatter(NullFormatter())
-ax.yaxis.set_major_formatter(NullFormatter())
-plt.axis('tight')
-
-t0 = time()
-mds = manifold.MDS(n_components, max_iter=100, n_init=1)
-Y = mds.fit_transform(X)
-t1 = time()
-print("MDS: %.2g sec" % (t1 - t0))
-ax = fig.add_subplot(258)
-plt.scatter(Y[:, 0], Y[:, 1], c=color, cmap=plt.cm.Spectral)
-plt.title("MDS (%.2g sec)" % (t1 - t0))
-ax.xaxis.set_major_formatter(NullFormatter())
-ax.yaxis.set_major_formatter(NullFormatter())
-plt.axis('tight')
-
-t0 = time()
-se = manifold.SpectralEmbedding(n_components=n_components,
-                                n_neighbors=n_neighbors)
-Y = se.fit_transform(X)
-t1 = time()
-print("SpectralEmbedding: %.2g sec" % (t1 - t0))
-ax = fig.add_subplot(259)
-plt.scatter(Y[:, 0], Y[:, 1], c=color, cmap=plt.cm.Spectral)
-plt.title("SpectralEmbedding (%.2g sec)" % (t1 - t0))
-ax.xaxis.set_major_formatter(NullFormatter())
-ax.yaxis.set_major_formatter(NullFormatter())
-plt.axis('tight')
-
-t0 = time()
-tsne = manifold.TSNE(n_components=n_components, init='pca', random_state=0)
-Y = tsne.fit_transform(X)
-t1 = time()
-print("t-SNE: %.2g sec" % (t1 - t0))
-ax = fig.add_subplot(2, 5, 10)
-plt.scatter(Y[:, 0], Y[:, 1], c=color, cmap=plt.cm.Spectral)
-plt.title("t-SNE (%.2g sec)" % (t1 - t0))
 ax.xaxis.set_major_formatter(NullFormatter())
 ax.yaxis.set_major_formatter(NullFormatter())
 plt.axis('tight')
